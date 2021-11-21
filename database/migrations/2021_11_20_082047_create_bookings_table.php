@@ -15,16 +15,19 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->string('full_name');
+            $table->string('address');
+            $table->string('phone_no');
             $table
-                ->enum('survey_type', ['resurvey', 'sub_divide', 'for_titling'])
-                ->nullable();
+                ->enum('survey_type', ['resurvey', 'sub_divide', 'for_titling']);
             $table
                 ->enum('status', ['pending', 'completed'])
                 ->default('pending');
             $table->dateTime('schedule_date');
             $table->string('land_location')->nullable();
-            $table->string('appoinment_notes');
+            $table->string('appoinment_notes')->nullable();
+            $table->timestamps();
 
             $table->index(['schedule_date', 'land_location']);
         });

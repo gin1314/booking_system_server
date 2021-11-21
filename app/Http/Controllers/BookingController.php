@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Booking;
+use App\Services\BookingService;
+use App\Transformers\BookingTransformer;
+use Illuminate\Http\Request;
+
+class BookingController extends Controller
+{
+    /**
+     *
+     * @var BookingService
+     */
+    protected $bookingService;
+
+    public function __construct(BookingService $bookingService)
+    {
+        $this->bookingService = $bookingService;
+    }
+
+    public function getBooking(Booking $booking)
+    {
+        return fractal($booking, new BookingTransformer);
+    }
+}
