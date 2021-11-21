@@ -20,13 +20,13 @@ class CreateBookingsTable extends Migration
             $table->string('address');
             $table->string('phone_no');
             $table
-                ->enum('survey_type', ['resurvey', 'sub_divide', 'for_titling']);
+                ->enum('survey_type', ['relocation_survey', 'sub_divide', 'for_titling']);
             $table
                 ->enum('status', ['pending', 'completed'])
                 ->default('pending');
             $table->dateTime('schedule_date');
-            $table->string('land_location')->nullable();
-            $table->string('appoinment_notes')->nullable();
+            $table->string('land_location');
+            $table->string('appointment_notes')->nullable();
             $table->timestamps();
 
             $table->index(['schedule_date', 'land_location']);
