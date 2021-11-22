@@ -29,5 +29,7 @@ class BookingService
         if($validator->fails()) {
             throw new ValidationException($validator->errors());
         }
+
+
     }
 }
