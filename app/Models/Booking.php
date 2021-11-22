@@ -13,6 +13,12 @@ class Booking extends Model
     const SURVEY_TYPE_SUB_DIVIDE = 'sub_divide';
     const SURVEY_TYPE_FOR_TITLING = 'for_titling';
 
+    const SURVEY_TYPES = [
+        self::SURVEY_TYPE_RELOCATIION_SURVEY,
+        self::SURVEY_TYPE_SUB_DIVIDE,
+        self::SURVEY_TYPE_FOR_TITLING
+    ];
+
     const STATUS_PENDING = 'pending';
     const STATUS_CONFIRMED = 'confirmed';
 
@@ -25,7 +31,9 @@ class Booking extends Model
         'schedule_date',
         'land_location',
         'appointment_notes',
+        'time_slot_id',
         'user_id',
+        'uuid',
     ];
 
     public function user()
