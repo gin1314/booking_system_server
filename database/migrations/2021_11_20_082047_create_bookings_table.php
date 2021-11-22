@@ -29,7 +29,7 @@ class CreateBookingsTable extends Migration
             $table->date('schedule_date');
             $table->string('land_location');
             $table->string('appointment_notes')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('time_slot_id');
             $table->timestamps();
 
