@@ -40,7 +40,8 @@ class BookingService
         } catch (QueryException $e) {
             if (preg_match('|Duplicate entry|', $e->getMessage())) {
                 throw new ValidationException([
-                    'time_slot_id' => ['This schedule has already been booked']
+                    'time_slot_id' => ['This time slot has already been booked'],
+                    'schedule_date' => ['This schedule has already been booked']
                 ]);
             }
             throw new ValidationException($e->getMessage());
