@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\TimeSlotController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,5 +37,14 @@ Route::group(
     function ($router) {
         $router->get('/{booking}', [BookingController::class, 'getBooking']);
         $router->post('/', [BookingController::class, 'create']);
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'timeslot'
+    ],
+    function ($router) {
+        $router->get('/', [TimeSlotController::class, 'getAll']);
     }
 );

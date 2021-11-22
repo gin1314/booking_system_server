@@ -9,6 +9,10 @@ class Booking extends Model
 {
     use HasFactory;
 
+    protected $appends = ['survey_type_word', 'time_slot_word'];
+
+    protected $with = ['timeSlot'];
+
     const SURVEY_TYPE_RELOCATIION_SURVEY = 'relocation_survey';
     const SURVEY_TYPE_SUB_DIVIDE = 'sub_divide';
     const SURVEY_TYPE_FOR_TITLING = 'for_titling';
@@ -33,7 +37,7 @@ class Booking extends Model
         'appointment_notes',
         'time_slot_id',
         'user_id',
-        'uuid',
+        'uuid'
     ];
 
     public function user()
@@ -43,6 +47,28 @@ class Booking extends Model
 
     public function timeSlot()
     {
-        return $this->hasOne(TimeSlot::class, 'id');
+        return $this->belongsTo(TimeSlot::class);
+    }
+
+    public function getSurveyTypeWordAttribute()
+    {
+
+        switch ($this->survey_type) {
+            case 'relocation_survey':
+                return 'Relocation Survey';
+            case 'sub_divide':
+                return 'Sub divide';
+            case 'for_titling':
+                return 'For titling';
+            default:
+                return $this->survey_type;
+        }
+
+        return '';
+    }
+
+    public function getTimeSlotWordAttribute()
+    {
+        return "{$this->timeSlot->start_time} - {$this->timeslot->end_time}";
     }
 }
