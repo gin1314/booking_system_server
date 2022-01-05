@@ -13,27 +13,48 @@ class Booking extends Model
 
     protected $with = ['timeSlot'];
 
-    const SURVEY_TYPE_RELOCATIION_SURVEY = 'relocation_survey';
-    const SURVEY_TYPE_SUB_DIVIDE = 'sub_divide';
-    const SURVEY_TYPE_FOR_TITLING = 'for_titling';
+    const SURVEY_TYPE_BOUNDARY = 'boundary';
+    const SURVEY_TYPE_CONSTRUCTION = 'construction';
+    const SURVEY_TYPE_LOCATION = 'location';
+    const SURVEY_TYPE_SITE_PLANNING = 'site_planning';
+    const SURVEY_TYPE_SUBDIVISION = 'subdivision';
+    const SURVEY_TYPE_TOPOGRAPHIC = 'topographic';
 
     const SURVEY_TYPES = [
-        self::SURVEY_TYPE_RELOCATIION_SURVEY,
-        self::SURVEY_TYPE_SUB_DIVIDE,
-        self::SURVEY_TYPE_FOR_TITLING
+        self::SURVEY_TYPE_BOUNDARY,
+        self::SURVEY_TYPE_CONSTRUCTION,
+        self::SURVEY_TYPE_LOCATION,
+        self::SURVEY_TYPE_SUBDIVISION,
+        self::SURVEY_TYPE_TOPOGRAPHIC
     ];
 
     const STATUS_PENDING = 'pending';
     const STATUS_CONFIRMED = 'confirmed';
 
+    protected $casts = [
+        'requirements' => 'array',
+    ];
+
     protected $fillable = [
-        'full_name',
-        'address',
+        // 'full_name',
+        'first_name',
+        'last_name',
+        // 'address',
+        'email',
         'phone_no',
         'survey_type',
         'status',
         'schedule_date',
-        'land_location',
+        'client_street',
+        'client_city',
+        'client_region',
+        'client_postal_code',
+        'land_street',
+        'land_city',
+        'land_region',
+        'land_postal_code',
+        'requirements',
+        // 'land_location',
         'appointment_notes',
         'time_slot_id',
         'user_id',
@@ -52,7 +73,6 @@ class Booking extends Model
 
     public function getSurveyTypeWordAttribute()
     {
-
         switch ($this->survey_type) {
             case 'relocation_survey':
                 return 'Relocation Survey';
