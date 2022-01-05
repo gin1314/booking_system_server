@@ -7,6 +7,8 @@ use App\Models\Booking;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class BookingService
 {
@@ -69,5 +71,13 @@ class BookingService
     public function getBooking(Booking $booking)
     {
         return $booking;
+    }
+
+    public function getAllBooking()
+    {
+        $bookings = QueryBuilder::for(Booking::class)
+            ->paginate(request()->get('per_page'));
+
+        return $bookings;
     }
 }

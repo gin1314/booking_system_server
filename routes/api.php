@@ -36,6 +36,7 @@ Route::group(
     ],
     function ($router) {
         $router->get('/{booking}', [BookingController::class, 'getBooking']);
+        $router->get('/', [BookingController::class, 'getAll']);
         $router->post('/', [BookingController::class, 'create']);
     }
 );
