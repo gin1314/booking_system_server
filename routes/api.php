@@ -35,9 +35,21 @@ Route::group(
         'prefix' => 'booking'
     ],
     function ($router) {
-        $router->get('/{booking}', [BookingController::class, 'getBooking']);
-        $router->get('/', [BookingController::class, 'getAll']);
-        $router->post('/', [BookingController::class, 'create']);
+        $router
+            ->get('/{booking}', [BookingController::class, 'getBooking'])
+            ->middleware(['auth:api'])
+            ->where('booking', '[0-9]+');
+        $router
+            ->get('/', [BookingController::class, 'getAll'])
+            ->middleware(['auth:api']);
+        $router
+            ->post('/', [BookingController::class, 'create'])
+            ->middleware(['auth:api']);
+
+        $router->get('/confirm-book', [
+            BookingController::class,
+            'confirmBooking'
+        ]);
     }
 );
 
