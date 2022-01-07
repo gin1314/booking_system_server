@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Exceptions\ValidationException;
+use App\Mail\BookingConfirmed;
 use App\Models\Booking;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -31,7 +34,7 @@ class BookingService
             'land_city' => ['required'],
             'land_region' => ['required'],
             'land_postal_code' => [''],
-            'email' => ['email'],
+            'email' => ['required', 'email'],
             'phone_no' => ['required'],
             'survey_type' => [
                 'required',
@@ -75,9 +78,31 @@ class BookingService
 
     public function getAllBooking()
     {
-        $bookings = QueryBuilder::for(Booking::class)
-            ->paginate(request()->get('per_page'));
+        $bookings = QueryBuilder::for(Booking::class)->paginate(
+            request()->get('per_page')
+        );
 
         return $bookings;
+    }
+
+    public function confirmBooking(Booking $booking)
+    {
+        if (auth()->user()->role !== 'engineer') {
+            throw new AuthorizationException(
+                'This action is unauthorized.',
+                403
+            );
+        }
+
+        $booking->status = 'confirmed';
+        $booking->user_id = auth()->user()->id;
+
+        $booking->save();
+
+        Mail::to($booking->email)->queue(
+            new BookingConfirmed($booking, auth()->user())
+        );
+
+        return $booking;
     }
 }

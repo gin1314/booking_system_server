@@ -46,9 +46,16 @@ Route::group(
             ->post('/', [BookingController::class, 'create'])
             ->middleware(['auth:api']);
 
-        $router->get('/confirm-book', [
+        $router
+            ->post('/confirm-booking/{booking}', [
+                BookingController::class,
+                'confirmBooking'
+            ])
+            ->where('booking', '[0-9]+');
+
+        $router->post('/cancel-booking', [
             BookingController::class,
-            'confirmBooking'
+            'cancelBooking'
         ]);
     }
 );

@@ -17,6 +17,7 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->nullable();
+            $table->string('reference_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('client_street');
@@ -33,15 +34,16 @@ class CreateBookingsTable extends Migration
             $table->json('requirements')->default("{}");
             $table->enum('survey_type', Booking::SURVEY_TYPES);
             $table
-                ->enum('status', ['pending', 'completed'])
+                ->enum('status', Booking::STATUS)
                 ->default('pending');
             $table->date('schedule_date');
-            $table->string('appointment_notes')->nullable();
+            $table->text('appointment_notes')->nullable();
+            $table->text('cancellation_reason')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('time_slot_id');
             $table->timestamps();
 
-            $table->index(['schedule_date', 'uuid']);
+            $table->index(['schedule_date', 'uuid', 'reference_id']);
             $table->unique(['schedule_date', 'time_slot_id']);
         });
     }

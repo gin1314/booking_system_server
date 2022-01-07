@@ -6,6 +6,7 @@ use App\Mail\BookingConfirmed;
 use App\Models\Booking;
 use App\Services\BookingService;
 use App\Transformers\BookingTransformer;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -41,10 +42,11 @@ class BookingController extends Controller
         return fractal($booking, new BookingTransformer())->respond();
     }
 
-    public function confirmBooking()
+    public function confirmBooking(Booking $booking)
     {
-        Mail::to('santosjohnnicolas@gmail.com')
-            ->cc('eugene.santos13@gmail.com')
-            ->queue(new BookingConfirmed());
+        $booking = $this->bookingService->confirmBooking($booking);
+
+        return fractal($booking, new BookingTransformer())->respond();
+
     }
 }

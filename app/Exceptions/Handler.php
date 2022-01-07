@@ -6,6 +6,8 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use App\ErrorCodes\Api as ApiErrorCode;
+use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -51,6 +53,16 @@ class Handler extends ExceptionHandler
                 ]
             ]], Response::HTTP_UNAUTHORIZED);
         }
+
+        if ($exception instanceof AuthorizationException) {
+            return response()->json(['errors' => [
+                [
+                    'code' => ApiErrorCode::UNAUTHORIZED_ACCESS['code'],
+                    'detail' => ApiErrorCode::UNAUTHORIZED_ACCESS['detail'],
+                ]
+            ]], Response::HTTP_UNAUTHORIZED);
+        }
+
         return parent::render($request, $exception);
     }
 }

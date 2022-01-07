@@ -30,6 +30,15 @@ class Booking extends Model
 
     const STATUS_PENDING = 'pending';
     const STATUS_CONFIRMED = 'confirmed';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled';
+
+    const STATUS = [
+        self::STATUS_PENDING,
+        self::STATUS_CONFIRMED,
+        self::STATUS_COMPLETED,
+        self::STATUS_CANCELLED
+    ];
 
     protected $casts = [
         'requirements' => 'array',
@@ -58,7 +67,8 @@ class Booking extends Model
         'appointment_notes',
         'time_slot_id',
         'user_id',
-        'uuid'
+        'uuid',
+        'reference_id',
     ];
 
     public function user()

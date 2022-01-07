@@ -4,11 +4,11 @@
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td class="content-block">
-                  Hello John Nicolas,
+                  Hello {{ $booking->first_name }} {{ $booking->last_name }},
                 </td>
               <tr>
                 <td class="content-block">
-                    Your booking has been approved
+                    Your booking has been confirmed!
                 </td>
               </tr>
               <tr>
@@ -16,14 +16,14 @@
                   <table>
                     <tbody>
                       <tr>
-                        <td></td>
+                        <td>Survey Engineer</td>
                         <td>-</td>
-                        <td></td>
+                        <td>{{ $user->name }}</td>
                       </tr>
                       <tr>
-                        <td></td>
+                        <td>Contact no.</td>
                         <td>-</td>
-                        <td></td>
+                        <td>{{ $user->phone_no }}</td>
                       </tr>
                       <tr>
                         <td></td>
