@@ -78,9 +78,9 @@ class BookingService
 
     public function getAllBooking()
     {
-        $bookings = QueryBuilder::for(Booking::class)->paginate(
-            request()->get('per_page')
-        );
+        $bookings = QueryBuilder::for(Booking::class)
+            ->allowedFilters(['user_id'])
+            ->paginate(request()->get('per_page'));
 
         return $bookings;
     }
@@ -102,6 +102,15 @@ class BookingService
         Mail::to($booking->email)->queue(
             new BookingConfirmed($booking, auth()->user())
         );
+
+        return $booking;
+    }
+
+    public function assignBooking(Booking $booking): Booking
+    {
+        $booking->user_id = auth()->user()->id;
+
+        $booking->save();
 
         return $booking;
     }

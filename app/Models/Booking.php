@@ -84,12 +84,18 @@ class Booking extends Model
     public function getSurveyTypeWordAttribute()
     {
         switch ($this->survey_type) {
-            case 'relocation_survey':
-                return 'Relocation Survey';
-            case 'sub_divide':
-                return 'Sub divide';
-            case 'for_titling':
-                return 'For titling';
+            case 'boundary':
+                return 'Boundary';
+            case 'construction':
+                return 'Construction';
+            case 'site_planning':
+                return 'Site Planning';
+            case 'subdivision':
+                return 'Subdivision';
+            case 'location':
+                return 'Location';
+            case 'topographic':
+                return 'Topographic';
             default:
                 return $this->survey_type;
         }
