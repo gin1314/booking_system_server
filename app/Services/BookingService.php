@@ -84,6 +84,7 @@ class BookingService
     public function getAllBooking()
     {
         $bookings = QueryBuilder::for(Booking::class)
+            ->allowedSorts(['schedule_date', 'id', 'created_at', 'updated_at'])
             ->allowedFilters(['user_id'])
             ->paginate(request()->get('per_page'));
 
@@ -152,7 +153,10 @@ class BookingService
 
     public function assignBooking(Booking $booking): Booking
     {
-        if (!empty($booking->user_id) && $booking->user_id !== auth()->user()->id) {
+        if (
+            !empty($booking->user_id) &&
+            $booking->user_id !== auth()->user()->id
+        ) {
             throw new AuthorizationException(
                 'This action is unauthorized.',
                 403
