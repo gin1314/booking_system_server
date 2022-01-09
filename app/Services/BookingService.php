@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ValidationException;
+use App\Mail\BookingAssigned;
 use App\Mail\BookingCompleted;
 use App\Mail\BookingConfirmed;
 use App\Models\Booking;
@@ -151,11 +152,22 @@ class BookingService
 
     public function assignBooking(Booking $booking): Booking
     {
+        if (!empty($booking->user_id) && $booking->user_id !== auth()->user()->id) {
+            throw new AuthorizationException(
+                'This action is unauthorized.',
+                403
+            );
+        }
+
         $booking->status = 'pending';
 
         $booking->user_id = auth()->user()->id;
 
         $booking->save();
+
+        Mail::to($booking->email)->queue(
+            new BookingAssigned($booking, auth()->user())
+        );
 
         return $booking;
     }
