@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class BookingConfirmed extends Mailable
+class BookingCompleted extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -45,20 +45,12 @@ class BookingConfirmed extends Mailable
     {
         $bookingSchedule =  (new Carbon($this->booking->schedule_date))->format('F j, Y');
 
-        $addressOfSurveyLand = implode(", ", [
-            $this->booking->client_street,
-            $this->booking->client_city,
-            $this->booking->client_region,
-            $this->booking->client_postal_code
-        ]);
-
-        return $this->subject('Booking Confirmed')
-            ->view('booking-confirmed')
+        return $this->subject('Booking Complete')
+            ->view('booking-complete')
             ->with([
                 'booking' => $this->booking,
                 'user' => $this->user,
                 'bookingSchedule' => $bookingSchedule,
-                'addressOfSurveyLand' => $addressOfSurveyLand,
             ]);
     }
 }

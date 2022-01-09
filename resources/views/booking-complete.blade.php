@@ -8,7 +8,7 @@
                 </td>
               <tr>
                 <td class="content-block">
-                    Your booking has been confirmed!
+                    Your booking has been been completed by {{ $booking->user->name }}
                 </td>
               </tr>
               <tr>
@@ -21,19 +21,14 @@
                         <td>{{ $user->name }}</td>
                       </tr>
                       <tr>
-                        <td>Engineer Contact no.</td>
+                        <td>Contact no.</td>
                         <td>-</td>
                         <td>{{ $user->phone_no }}</td>
                       </tr>
                       <tr>
-                        <td>Booking Schedule</td>
+                        <td>Survey Schedult</td>
                         <td>-</td>
-                        <td>{{ $bookingSchedule  }} {{ $booking->time_slot_word  }}</td>
-                      </tr>
-                      <tr>
-                        <td>Address of survey land</td>
-                        <td>-</td>
-                        <td>{{ $addressOfSurveyLand  }}<td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>

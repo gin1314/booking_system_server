@@ -284,7 +284,7 @@ a {
           <div class="footer">
             <table width="100%">
               <tr>
-                <td class="aligncenter content-block"><a href="#">JBL Survey</a></td>
+                <td class="aligncenter content-block"><a href="#">JBS Land Surveying</a></td>
               </tr>
             </table>
           </div>

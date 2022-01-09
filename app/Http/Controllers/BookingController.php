@@ -49,6 +49,13 @@ class BookingController extends Controller
         return fractal($booking, new BookingTransformer())->respond();
     }
 
+    public function completeBooking(Booking $booking)
+    {
+        $booking = $this->bookingService->completeBooking($booking);
+
+        return fractal($booking, new BookingTransformer())->respond();
+    }
+
     public function assignBooking(Booking $booking)
     {
         $booking = $this->bookingService->assignBooking($booking);

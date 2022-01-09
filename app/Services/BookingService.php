@@ -3,13 +3,17 @@
 namespace App\Services;
 
 use App\Exceptions\ValidationException;
+use App\Mail\BookingCompleted;
 use App\Mail\BookingConfirmed;
 use App\Models\Booking;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\InvalidCastException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -85,6 +89,15 @@ class BookingService
         return $bookings;
     }
 
+    /**
+     * Booking confirmed business logic, it send an email to the client
+     * @param Booking $booking
+     * @return Booking
+     * @throws BindingResolutionException
+     * @throws AuthorizationException
+     * @throws InvalidArgumentException
+     * @throws InvalidCastException
+     */
     public function confirmBooking(Booking $booking)
     {
         if (auth()->user()->role !== 'engineer') {
@@ -106,8 +119,40 @@ class BookingService
         return $booking;
     }
 
+    /**
+     * Booking complete business logic, it send an email to the client
+     * @param Booking $booking
+     * @return Booking
+     * @throws BindingResolutionException
+     * @throws AuthorizationException
+     * @throws InvalidArgumentException
+     * @throws InvalidCastException
+     */
+    public function completeBooking(Booking $booking): Booking
+    {
+        if (auth()->user()->role !== 'engineer') {
+            throw new AuthorizationException(
+                'This action is unauthorized.',
+                403
+            );
+        }
+
+        $booking->status = 'completed';
+        $booking->user_id = auth()->user()->id;
+
+        $booking->save();
+
+        Mail::to($booking->email)->queue(
+            new BookingCompleted($booking, auth()->user())
+        );
+
+        return $booking;
+    }
+
     public function assignBooking(Booking $booking): Booking
     {
+        $booking->status = 'pending';
+
         $booking->user_id = auth()->user()->id;
 
         $booking->save();

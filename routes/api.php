@@ -54,6 +54,13 @@ Route::group(
             ->where('booking', '[0-9]+');
 
         $router
+            ->post('/complete/{booking}', [
+                BookingController::class,
+                'completeBooking'
+            ])
+            ->where('booking', '[0-9]+');
+
+        $router
             ->post('/assign/{booking}', [
                 BookingController::class,
                 'assignBooking'
