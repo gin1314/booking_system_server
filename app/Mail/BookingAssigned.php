@@ -54,7 +54,7 @@ class BookingAssigned extends Mailable
         ]);
 
         $requirements = [];
-        foreach ($this->booking->requirements as $req => $value) {
+        foreach (json_decode($this->booking->requirements, true) as $req => $value) {
             if ($value) {
                 $reqReplaced = Str::replace("_", " ", $req);
                 $reqReplaced = Str::ucfirst($reqReplaced);
