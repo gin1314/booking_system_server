@@ -18,7 +18,7 @@ use InvalidArgumentException;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class BookingService
+class UserService
 {
     public function __construct()
     {
@@ -85,15 +85,7 @@ class BookingService
     {
         $bookings = QueryBuilder::for(Booking::class)
             ->allowedSorts(['schedule_date', 'id', 'created_at', 'updated_at'])
-            ->allowedIncludes(['user'])
-            ->allowedFilters([
-                'user_id',
-                'id',
-                'last_name',
-                'first_name',
-                'phone_no',
-                'email'
-            ])
+            ->allowedFilters(['user_id'])
             ->paginate(request()->get('per_page'));
 
         return $bookings;

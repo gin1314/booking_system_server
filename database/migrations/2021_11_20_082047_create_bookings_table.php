@@ -18,6 +18,7 @@ class CreateBookingsTable extends Migration
             $table->id();
             $table->uuid('uuid')->nullable();
             $table->string('reference_id')->nullable();
+            $table->boolean('is_approved')->default(0);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('client_street');
