@@ -6,6 +6,7 @@ use App\Exceptions\ValidationException;
 use App\Mail\BookingAssigned;
 use App\Mail\BookingCompleted;
 use App\Mail\BookingConfirmed;
+use App\Mail\BookingCreated;
 use App\Models\Booking;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -72,6 +73,10 @@ class BookingService
             }
             throw new ValidationException($e->getMessage());
         }
+
+        Mail::to($booking->email)->queue(
+            new BookingCreated($booking)
+        );
 
         return $booking;
     }

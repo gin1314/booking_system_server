@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\TimeSlotController;
+use App\Http\Controllers\Usercontroller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,7 +44,7 @@ Route::group(
             ->middleware(['auth:api']);
         $router
             ->post('/', [BookingController::class, 'create']);
-            // ->middleware(['auth:api']);
+        // ->middleware(['auth:api']);
 
         $router
             ->post('/confirm/{booking}', [
@@ -81,5 +82,16 @@ Route::group(
     ],
     function ($router) {
         $router->get('/', [TimeSlotController::class, 'getAll']);
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'user'
+    ],
+    function ($router) {
+        $router->get('/', [Usercontroller::class, 'getAll']);
+        $router
+            ->post('/', [Usercontroller::class, 'create']);
     }
 );
