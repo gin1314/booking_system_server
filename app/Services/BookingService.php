@@ -97,7 +97,8 @@ class BookingService
                 'last_name',
                 'first_name',
                 'phone_no',
-                'email'
+                'email',
+                'status'
             ])
             ->paginate(request()->get('per_page'));
 
