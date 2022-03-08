@@ -93,5 +93,12 @@ Route::group(
         $router->get('/', [Usercontroller::class, 'getAll']);
         $router
             ->post('/', [Usercontroller::class, 'create']);
+
+        $router
+            ->put('/{user}', [
+                Usercontroller::class,
+                'update'
+            ])
+            ->where('user', '[0-9]+');
     }
 );

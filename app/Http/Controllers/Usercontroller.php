@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\UserService;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
@@ -26,9 +27,16 @@ class Usercontroller extends Controller
         return fractal($user, new UserTransformer())->respond();
     }
 
-    public function getAll()
+    public function update(User $user)
     {
-        $timeSlots = $this->userService->getAll();
+        $user = $this->userService->update($user);
+
+        return fractal($user, new UserTransformer())->respond();
+    }
+
+    public function getAll(Request $request)
+    {
+        $timeSlots = $this->userService->getAll($request);
 
         return fractal($timeSlots, new UserTransformer)->respond();
     }

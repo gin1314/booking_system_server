@@ -8,6 +8,7 @@ use App\Mail\BookingCompleted;
 use App\Mail\BookingConfirmed;
 use App\Mail\BookingCreated;
 use App\Models\Booking;
+use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\InvalidCastException;
@@ -92,8 +93,8 @@ class BookingService
             ->allowedSorts(['schedule_date', 'id', 'created_at', 'updated_at'])
             ->allowedIncludes(['user'])
             ->allowedFilters([
+                AllowedFilter::exact('id'),
                 'user_id',
-                'id',
                 'last_name',
                 'first_name',
                 'phone_no',
@@ -177,14 +178,20 @@ class BookingService
             );
         }
 
+        $validator = Validator::make(request()->all(), [
+            'user_id' => ['required', 'exists:users,id']
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors());
+        }
+
         $booking->status = 'pending';
-
-        $booking->user_id = auth()->user()->id;
-
+        $booking->user_id = request()->get('user_id');
         $booking->save();
 
         Mail::to($booking->email)->queue(
-            new BookingAssigned($booking, auth()->user())
+            new BookingAssigned($booking, User::find(request()->get('user_id')))
         );
 
         return $booking;
