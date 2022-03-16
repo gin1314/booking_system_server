@@ -190,8 +190,10 @@ class BookingService
         $booking->user_id = request()->get('user_id');
         $booking->save();
 
-        Mail::to($booking->email)->queue(
-            new BookingAssigned($booking, User::find(request()->get('user_id')))
+        $assignedUser = User::find(request()->get('user_id'));
+
+        Mail::to($assignedUser->email)->queue(
+            new BookingAssigned($booking, $assignedUser)
         );
 
         return $booking;
