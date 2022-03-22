@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\ValidationException;
 use App\Mail\BookingAssigned;
+use App\Mail\BookingCancelled;
 use App\Mail\BookingCompleted;
 use App\Mail\BookingConfirmed;
 use App\Mail\BookingCreated;
@@ -168,10 +169,7 @@ class BookingService
 
     public function assignBooking(Booking $booking): Booking
     {
-        if (
-            !empty($booking->user_id) &&
-            $booking->user_id !== auth()->user()->id
-        ) {
+        if (auth()->user()->role !== 'admin') {
             throw new AuthorizationException(
                 'This action is unauthorized.',
                 403
@@ -186,7 +184,7 @@ class BookingService
             throw new ValidationException($validator->errors());
         }
 
-        $booking->status = 'pending';
+        $booking->status = 'assigned';
         $booking->user_id = request()->get('user_id');
         $booking->save();
 
@@ -194,6 +192,31 @@ class BookingService
 
         Mail::to($assignedUser->email)->queue(
             new BookingAssigned($booking, $assignedUser)
+        );
+
+        return $booking;
+    }
+
+    public function cancelBooking(Booking $booking)
+    {
+        if (
+            !empty($booking->user_id) &&
+            $booking->user_id !== auth()->user()->id
+        ) {
+            throw new AuthorizationException(
+                'This action is unauthorized.',
+                403
+            );
+        }
+
+        $booking->status = 'pending';
+        $booking->user_id = null;
+        $booking->save();
+
+        $adminsEmail = User::where('role', 'admin')->get()->pluck('email');
+
+        Mail::to($adminsEmail)->queue(
+            new BookingCancelled($booking, auth()->user())
         );
 
         return $booking;
