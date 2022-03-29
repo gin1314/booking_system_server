@@ -40,4 +40,11 @@ class Usercontroller extends Controller
 
         return fractal($timeSlots, new UserTransformer)->respond();
     }
+
+    public function delete(User $user)
+    {
+        $user = $this->userService->delete($user);
+
+        return fractal($user, new UserTransformer())->respond();
+    }
 }

@@ -100,5 +100,12 @@ Route::group(
                 'update'
             ])
             ->where('user', '[0-9]+');
+
+        $router
+            ->delete('/{user}', [
+                Usercontroller::class,
+                'delete'
+            ])
+            ->where('user', '[0-9]+');
     }
 );

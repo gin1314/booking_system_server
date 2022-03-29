@@ -122,4 +122,18 @@ class UserService
 
         return $user;
     }
+
+    public function delete(User $user)
+    {
+        if (auth()->user()->role !== 'admin') {
+            throw new AuthorizationException(
+                'This action is unauthorized.',
+                403
+            );
+        }
+
+        $user->delete();
+
+        return $user;
+    }
 }
