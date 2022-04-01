@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\Usercontroller;
 use Illuminate\Http\Request;
@@ -107,5 +108,49 @@ Route::group(
                 'delete'
             ])
             ->where('user', '[0-9]+');
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'files'
+    ],
+    function ($router) {
+        // $router
+        //     ->get('/dock-receipt/{dockReceipt}', [
+        //         FileController::class,
+        //         'findFilesByDockReceipt'
+        //     ])
+        //     ->middleware(['auth:api']);
+
+        // $router
+        //     ->delete('{file}', [
+        //         FileController::class,
+        //         'deleteFile'
+        //     ])
+        //     ->middleware(['auth:api'])
+        //     ->where('file', '[0-9]+');
+
+        // $router
+        //     ->get('/bol/{bol}', [FileController::class, 'findFilesByBol'])
+        //     ->middleware(['auth:api']);
+
+        $router
+            ->post('/booking/{booking}/upload', [
+                FileController::class,
+                'addBookingFile'
+            ])
+            ->middleware(['auth:api']);
+
+        // $router
+        //     ->post('/bol/{bol}/upload', [FileController::class, 'addBolFile'])
+        //     ->middleware(['auth:api']);
+
+        // $router
+        //     ->post('/avatar/{user}/upload', [
+        //         FileController::class,
+        //         'addAvatarFile'
+        //     ])
+        //     ->middleware(['auth:api']);
     }
 );

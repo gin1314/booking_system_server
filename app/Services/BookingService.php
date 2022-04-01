@@ -92,7 +92,7 @@ class BookingService
     {
         $bookings = QueryBuilder::for(Booking::class)
             ->allowedSorts(['schedule_date', 'id', 'created_at', 'updated_at'])
-            ->allowedIncludes(['user'])
+            ->allowedIncludes(Booking::INCLUDES_VIEW)
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 'user_id',

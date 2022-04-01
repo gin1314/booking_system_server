@@ -46,6 +46,11 @@ class Booking extends Model
         'requirements' => 'array',
     ];
 
+    const INCLUDES_VIEW = [
+        'files',
+        'user'
+    ];
+
     protected $fillable = [
         // 'full_name',
         'first_name',
@@ -76,6 +81,11 @@ class Booking extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function files()
+    {
+        return $this->morphMany(FileUpload::class, 'uploadable');
     }
 
     public function timeSlot()
