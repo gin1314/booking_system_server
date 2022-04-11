@@ -3,8 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\Usercontroller;
+use App\Http\Controllers\WebhooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -152,5 +154,38 @@ Route::group(
         //         'addAvatarFile'
         //     ])
         //     ->middleware(['auth:api']);
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'invoices'
+    ],
+    function ($router) {
+        $router
+            ->post('/gcash/create/{booking}', [
+                InvoiceController::class,
+                'create'
+            ])
+            ->where('booking', '[0-9]+');
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'webhooks'
+    ],
+    function ($router) {
+        $router
+            ->post('/gcash/success', [
+                WebhooksController::class,
+                'gcashSuccess'
+            ]);
+
+        $router
+            ->post('/gcash/fail', [
+                WebhooksController::class,
+                'gcashFail'
+            ]);
     }
 );

@@ -93,6 +93,11 @@ class Booking extends Model
         return $this->belongsTo(TimeSlot::class);
     }
 
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class);
+    }
+
     public function getSurveyTypeWordAttribute()
     {
         switch ($this->survey_type) {
