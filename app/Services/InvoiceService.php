@@ -30,7 +30,7 @@ class InvoiceService
 
         $validator = Validator::make($data, [
             'booking_id' => ['exists:bookings,id'],
-            'amount' => ['required'],
+            'amount' => ['required', 'numeric'],
             'reference_id' => ['required'],
             'hash' => ['required'],
             'gcash_checkout_url' => ['required'],

@@ -48,7 +48,8 @@ class Booking extends Model
 
     const INCLUDES_VIEW = [
         'files',
-        'user'
+        'user',
+        'invoice'
     ];
 
     protected $fillable = [
