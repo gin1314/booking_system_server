@@ -10,6 +10,7 @@ use App\Mail\BookingConfirmed;
 use App\Mail\BookingCreated;
 use App\Models\Booking;
 use App\Models\User;
+use App\QueryBuilder\FilterByInvoiceStatus;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\InvalidCastException;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class BookingService
@@ -69,16 +71,14 @@ class BookingService
                 throw new ValidationException([
                     'time_slot_id' => [
                         'The schedule is full on this date and time, choose another date and time'
-                    ],
+                    ]
                     // 'schedule_date' => ['T']
                 ]);
             }
             throw new ValidationException($e->getMessage());
         }
 
-        Mail::to($booking->email)->queue(
-            new BookingCreated($booking)
-        );
+        Mail::to($booking->email)->queue(new BookingCreated($booking));
 
         return $booking;
     }
@@ -92,7 +92,11 @@ class BookingService
     {
         $bookings = QueryBuilder::for(Booking::class)
             ->allowedSorts(['schedule_date', 'id', 'created_at', 'updated_at'])
-            ->allowedIncludes(Booking::INCLUDES_VIEW)
+            ->allowedIncludes(
+                array_merge(Booking::INCLUDES_VIEW, [
+                    AllowedInclude::custom('invoice_status_paid', new FilterByInvoiceStatus('paid'), 'invoice')
+                ])
+            )
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 'user_id',
@@ -213,7 +217,9 @@ class BookingService
         $booking->user_id = null;
         $booking->save();
 
-        $adminsEmail = User::where('role', 'admin')->get()->pluck('email');
+        $adminsEmail = User::where('role', 'admin')
+            ->get()
+            ->pluck('email');
 
         Mail::to($adminsEmail)->queue(
             new BookingCancelled($booking, auth()->user())

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PaymentSuccess;
+use App\Models\Booking;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class WebhooksController extends Controller
 {
@@ -23,6 +26,11 @@ class WebhooksController extends Controller
         $invoice->webhook_log = json_encode($data);
 
         $invoice->save();
+        $booking = Booking::find($invoice->booking_id);
+
+        Mail::to($booking->email)->queue(
+            new PaymentSuccess($booking)
+        );
 
         return response()->json(['ok']);
     }

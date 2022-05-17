@@ -45,8 +45,7 @@ Route::group(
         $router
             ->get('/', [BookingController::class, 'getAll'])
             ->middleware(['auth:api']);
-        $router
-            ->post('/', [BookingController::class, 'create']);
+        $router->post('/', [BookingController::class, 'create']);
         // ->middleware(['auth:api']);
 
         $router
@@ -94,22 +93,22 @@ Route::group(
     ],
     function ($router) {
         $router->get('/', [Usercontroller::class, 'getAll']);
-        $router
-            ->post('/', [Usercontroller::class, 'create']);
+        $router->post('/', [Usercontroller::class, 'create']);
 
         $router
-            ->put('/{user}', [
-                Usercontroller::class,
-                'update'
-            ])
+            ->put('/{user}', [Usercontroller::class, 'update'])
             ->where('user', '[0-9]+');
 
         $router
-            ->delete('/{user}', [
-                Usercontroller::class,
-                'delete'
-            ])
+            ->delete('/{user}', [Usercontroller::class, 'delete'])
             ->where('user', '[0-9]+');
+
+        $router
+            ->get('/send-email/survey/processing/{booking}', [Usercontroller::class, 'sendEmailSurveyProcessing'])
+            ->where('booking', '[0-9]+');
+        $router
+            ->get('/send-email/survey/receiving/{booking}', [Usercontroller::class, 'sendEmailSurveyReceiving'])
+            ->where('booking', '[0-9]+');
     }
 );
 
@@ -176,16 +175,11 @@ Route::group(
         'prefix' => 'webhooks'
     ],
     function ($router) {
-        $router
-            ->post('/gcash/success', [
-                WebhooksController::class,
-                'gcashSuccess'
-            ]);
+        $router->post('/gcash/success', [
+            WebhooksController::class,
+            'gcashSuccess'
+        ]);
 
-        $router
-            ->post('/gcash/fail', [
-                WebhooksController::class,
-                'gcashFail'
-            ]);
+        $router->post('/gcash/fail', [WebhooksController::class, 'gcashFail']);
     }
 );
