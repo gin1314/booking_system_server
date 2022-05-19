@@ -140,8 +140,8 @@ Route::group(
             ->post('/booking/{booking}/upload', [
                 FileController::class,
                 'addBookingFile'
-            ])
-            ->middleware(['auth:api']);
+            ]);
+            // ->middleware(['auth:api']);
 
         // $router
         //     ->post('/bol/{bol}/upload', [FileController::class, 'addBolFile'])
