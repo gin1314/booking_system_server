@@ -47,7 +47,8 @@ class FileUploadService
                 $file->hash = sha1_file($uploadedFile->getPathname());
                 $file->file_name = $uploadedFile->getClientOriginalName();
                 $file->code = substr(sha1(rand()), 0, 6);
-                $file->uploaded_by = auth()->user()->id;
+                // zero for now
+                $file->uploaded_by = 0;
                 $file->type = $request->get('type');
                 $file->uploadable_type = Booking::class;
                 $file->uploadable_id = $booking->id;
