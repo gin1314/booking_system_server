@@ -38,24 +38,46 @@ class FileUploadService
     public function addBookingFile(Booking $booking, Request $request)
     {
         // @TODO: replace name as the actual path
+        $files = [];
         if ($request->hasFile('file')) {
-            $file = new FileUpload;
-            $file->hash = sha1_file($request->file('file')->getPathname());
-            $file->file_name = $request->file('file')->getClientOriginalName();
-            $file->code = substr(sha1(rand()), 0, 6);
-            $file->uploaded_by = auth()->user()->id;
-            $file->type = $request->get('type');
-            $file->uploadable_type = Booking::class;
-            $file->uploadable_id = $booking->id;
-            $file->type = $request->get('type');
-            $extension = strtolower($request->file('file')->extension());
-            $file->file_extension = $extension;
+
+            // $filess = $request->file('file');
+            foreach ($request->file('file') as $uploadedFile) {
+                $file = new FileUpload;
+                $file->hash = sha1_file($uploadedFile->getPathname());
+                $file->file_name = $uploadedFile->getClientOriginalName();
+                $file->code = substr(sha1(rand()), 0, 6);
+                $file->uploaded_by = auth()->user()->id;
+                $file->type = $request->get('type');
+                $file->uploadable_type = Booking::class;
+                $file->uploadable_id = $booking->id;
+                $file->type = $request->get('type');
+                $extension = strtolower($uploadedFile->getClientOriginalExtension());
+                $file->file_extension = $extension;
 
 
-            $file->save();
+                $file->save();
+                $files[] = $file;
+                $uploadedFile->storeAs("uploads/booking/{$booking->id}", "{$file->hash}.{$extension}");
+            }
 
-            $request->file->storeAs("uploads/booking/{$booking->id}", "{$file->hash}.{$extension}");
-            return $file;
+            // $file = new FileUpload;
+            // $file->hash = sha1_file($request->file('file')->getPathname());
+            // $file->file_name = $request->file('file')->getClientOriginalName();
+            // $file->code = substr(sha1(rand()), 0, 6);
+            // $file->uploaded_by = auth()->user()->id;
+            // $file->type = $request->get('type');
+            // $file->uploadable_type = Booking::class;
+            // $file->uploadable_id = $booking->id;
+            // $file->type = $request->get('type');
+            // $extension = strtolower($request->file('file')->extension());
+            // $file->file_extension = $extension;
+
+
+            // $file->save();
+
+            // $request->file->storeAs("uploads/booking/{$booking->id}", "{$file->hash}.{$extension}");
+            return collect($files);
         }
 
         return $request;
