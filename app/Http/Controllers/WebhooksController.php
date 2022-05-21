@@ -28,6 +28,10 @@ class WebhooksController extends Controller
         $invoice->save();
         $booking = Booking::find($invoice->booking_id);
 
+        $booking->status = 'paid';
+
+        $booking->save();
+
         Mail::to($booking->email)->queue(
             new PaymentSuccess($booking)
         );

@@ -74,7 +74,7 @@ class InvoiceService
 
         $response = Http::asForm()->post($gcashUrl, [
             'x-public-key' => config('gcash.public_key'),
-            'amount' => $data['amount'],
+            'amount' => 10,//$data['amount'],
             'expiry' => $data['link_expiry'] ?? config('gcash.link_expiry'),
             'description' => 'Payment for JBS Land Surveying Services',
             'customername' => $customerFullname,

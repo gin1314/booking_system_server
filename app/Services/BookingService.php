@@ -11,6 +11,7 @@ use App\Mail\BookingCreated;
 use App\Models\Booking;
 use App\Models\User;
 use App\QueryBuilder\FilterByInvoiceStatus;
+use App\QueryBuilder\FilterByInvoiceUnpaid;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\InvalidCastException;
@@ -94,7 +95,8 @@ class BookingService
             ->allowedSorts(['schedule_date', 'id', 'created_at', 'updated_at'])
             ->allowedIncludes(
                 array_merge(Booking::INCLUDES_VIEW, [
-                    AllowedInclude::custom('invoice_status_paid', new FilterByInvoiceStatus('paid'), 'invoice')
+                    AllowedInclude::custom('invoice_status_paid', new FilterByInvoiceStatus('paid'), 'invoice'),
+                    AllowedInclude::custom('invoice_status_unpaid', new FilterByInvoiceUnpaid(), 'invoice'),
                 ])
             )
             ->allowedFilters([
