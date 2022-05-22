@@ -48,14 +48,21 @@ class InvoiceController extends Controller
     {
         $data['amount'] = request()->get('amount');
         $data['expiry'] = request()->get('expiry');
+        $data['metadata'] = request()->get('metadata');
 
         $gcashPaymentRequestResponse = $this->invoiceService->createGcashPaymentRequest($booking, $data);
 
         $serviceData['amount'] = $data['amount'];
+        $serviceData['metadata'] = $data['metadata'];
         $serviceData['payment_request_log'] = $gcashPaymentRequestResponse;
         $serviceData['gcash_checkout_url'] = Arr::get($gcashPaymentRequestResponse, 'data.checkouturl');
         $serviceData['reference_id'] = Arr::get($gcashPaymentRequestResponse, 'data.code');
         $serviceData['hash'] = Arr::get($gcashPaymentRequestResponse, 'data.hash');
+
+        // $serviceData['payment_request_log'] = '$gcashPaymentRequestResponse';
+        // $serviceData['gcash_checkout_url'] = "Arr::get";
+        // $serviceData['reference_id'] = "dasdasda";
+        // $serviceData['hash'] = "Asdadasdasd";
 
         $invoice = $this->invoiceService->create($booking, $serviceData);
 

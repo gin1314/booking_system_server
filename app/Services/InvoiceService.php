@@ -30,7 +30,7 @@ class InvoiceService
 
         $validator = Validator::make($data, [
             'booking_id' => ['exists:bookings,id'],
-            'amount' => ['required', 'numeric'],
+            'amount' => ['required', 'numeric', 'gt:0'],
             'reference_id' => ['required'],
             'hash' => ['required'],
             'gcash_checkout_url' => ['required'],
@@ -54,7 +54,8 @@ class InvoiceService
         $invoice->save();
 
         $booking = Booking::find($booking->id);
-
+        $booking->metadata = json_encode($data['metadata']);
+        $booking->save();
         // $adminsEmail = User::where('role', 'admin')->get()->pluck('email');
 
         Mail::to($booking->email)->queue(

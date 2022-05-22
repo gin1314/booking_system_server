@@ -33,6 +33,7 @@ class CreateBookingsTable extends Migration
             $table->string('phone_no');
             $table->string('email');
             $table->json('requirements')->default("{}");
+            $table->json('metadata')->default("{}");
             $table->enum('survey_type', Booking::SURVEY_TYPES);
             $table
                 ->enum('status', Booking::STATUS)

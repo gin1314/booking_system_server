@@ -41,6 +41,7 @@ class InvoiceCreated extends Mailable
         $invoiceNo = Str::padLeft($this->booking->invoice->id, 10, '0');
         $amount = $this->booking->invoice->amount;
         $dueDate =  (new Carbon($this->booking->invoice->created_at))->format('F j, Y');
+        $metadata = json_decode($this->booking->metadata, true);
 
         return $this->subject("Payment for invoice #{$invoiceNo} is due today")
             ->view('invoice-created')
@@ -51,6 +52,7 @@ class InvoiceCreated extends Mailable
                 'invoiceNo' => $invoiceNo,
                 'amount' => $amount,
                 'dueDate' => $dueDate,
+                'metadata' => $metadata
             ]);
     }
 }

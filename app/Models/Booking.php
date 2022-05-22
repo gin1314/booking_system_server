@@ -46,6 +46,7 @@ class Booking extends Model
 
     protected $casts = [
         'requirements' => 'array',
+        'metadata' => 'array',
     ];
 
     const INCLUDES_VIEW = [

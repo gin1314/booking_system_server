@@ -11,6 +11,24 @@
                     Hope you're doing well. This is just to remind you that the invoice #{{ $invoiceNo }} with total of PHP {{ $amount }} We've sent you on {{ $dueDate }} is due today.
                 </td>
               </tr>
+
+              @if(!empty($metadata))
+                <tr>
+                  <td class="content-block">
+                    <table>
+                      <tbody>
+                        @foreach ($metadata as $data)
+                          <tr>
+                            <td>{{ $data['field'] }}</td>
+                            <td>&nbsp;:&nbsp;</td>
+                            <td>{{ $data['value'] }}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              @endif
               <tr>
                 <td class="content-block">
                     You can make your payment through this <a href="{{ $gcashLink }}" taget="_blank">GCash link</a>
