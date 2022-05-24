@@ -34,6 +34,8 @@ class Booking extends Model
     const STATUS_COMPLETED = 'completed';
     const STATUS_CANCELLED = 'cancelled';
     const STATUS_PAID = 'paid';
+    const STATUS_PROCESS = 'process';
+    const STATUS_RECEIVING = 'receiving';
 
     const STATUS = [
         self::STATUS_PENDING,
@@ -41,7 +43,9 @@ class Booking extends Model
         self::STATUS_CONFIRMED,
         self::STATUS_COMPLETED,
         self::STATUS_CANCELLED,
-        self::STATUS_PAID
+        self::STATUS_PAID,
+        self::STATUS_PROCESS,
+        self::STATUS_RECEIVING
     ];
 
     protected $casts = [

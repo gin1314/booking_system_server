@@ -55,6 +55,9 @@ class Usercontroller extends Controller
 
     public function sendEmailSurveyProcessing(Booking $booking)
     {
+        $booking->status = Booking::STATUS_PROCESS;
+        $booking->save();
+
         Mail::to($booking->email)->queue(
             new SurveyProcessing($booking)
         );
@@ -64,6 +67,9 @@ class Usercontroller extends Controller
 
     public function sendEmailSurveyReceiving(Booking $booking)
     {
+        $booking->status = Booking::STATUS_RECEIVING;
+        $booking->save();
+
         Mail::to($booking->email)->queue(
             new SurveyReceiving($booking)
         );
