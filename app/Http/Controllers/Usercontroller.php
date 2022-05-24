@@ -71,7 +71,7 @@ class Usercontroller extends Controller
         $booking->save();
 
         Mail::to($booking->email)->queue(
-            new SurveyReceiving($booking)
+            new SurveyReceiving($booking, request()->get('remarks', ''))
         );
 
         return fractal($booking, new BookingTransformer)->respond();

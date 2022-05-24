@@ -107,7 +107,7 @@ Route::group(
             ->get('/send-email/survey/processing/{booking}', [Usercontroller::class, 'sendEmailSurveyProcessing'])
             ->where('booking', '[0-9]+');
         $router
-            ->get('/send-email/survey/receiving/{booking}', [Usercontroller::class, 'sendEmailSurveyReceiving'])
+            ->post('/send-email/survey/receiving/{booking}', [Usercontroller::class, 'sendEmailSurveyReceiving'])
             ->where('booking', '[0-9]+');
     }
 );

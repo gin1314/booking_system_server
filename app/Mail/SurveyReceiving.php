@@ -21,13 +21,19 @@ class SurveyReceiving extends Mailable
     protected $booking;
 
     /**
+     *
+     * @var string
+     */
+    protected $remark;
+    /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Booking $booking)
+    public function __construct(Booking $booking, $remark)
     {
         $this->booking = $booking;
+        $this->remark = $remark;
     }
 
     /**
@@ -51,6 +57,7 @@ class SurveyReceiving extends Mailable
                 'invoiceNo' => $invoiceNo,
                 'amount' => $amount,
                 'dueDate' => $dueDate,
+                'remark' => $this->remark,
             ]);
     }
 }

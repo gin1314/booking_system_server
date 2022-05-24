@@ -11,11 +11,24 @@
                   Thank you for trusting our company. Your papers are done processing kindly visit our office at Unit H, 2nd Floor F & P Bldg. (Infront of Taguig City Hall) Gen. Luna st. Tuktukan Taguig City
                 </td>
               </tr>
-              <tr>
-                <td class="content-block">
-                    If you have any questions, please contact us
-                </td>
-              </tr>
+              @if(!empty($remark))
+                <tr>
+                  <td class="content-block">
+                    <b>Remarks:</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 0 20px 20px 20px;" class="content-block">
+                    {{ $remark }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content-block">
+                      If you have any questions, please contact us
+                  </td>
+                </tr>
+              @endif
+
               {{-- <tr>
                 <td class="content-block">
                   <table>
